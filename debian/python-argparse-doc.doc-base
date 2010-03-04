@@ -1,0 +1,10 @@
+Document: python-argparse-doc
+Title: python-argparse online documentation
+Author: Steven Bethard
+Abstract: This set of document provides more information on
+ the python-argparse extension
+Section: Programming/Python
+
+Format: HTML
+Index: /usr/share/doc/python-argparse-doc/html/index.html
+Files: /usr/share/doc/python-argparse-doc/html/*.html

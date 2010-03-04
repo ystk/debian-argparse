@@ -1,0 +1,43 @@
+argparse (1.1-1) unstable; urgency=low
+
+  [ Jakub Wilk ]
+  * Move jquery.js symlink to the right package.
+  * Don't compress *.js files.
+
+  [ Ritesh Raj Sarraf ]
+  * New upstream release
+  * Add ${misc:Depends}, fixes lintian warning debhelper-but-no-misc-depends
+  * Bump Standards Version to 3.8.4. (No Changes Required) 
+
+ -- Ritesh Raj Sarraf <rrs@researchut.com>  Thu, 04 Mar 2010 16:09:28 +0530
+
+argparse (1.0.1-1) unstable; urgency=low
+
+  * New upstream bugfix release 
+  * debian/control
+    - Move python-support and python-sphinx to Build-Depends-Indep
+    - Add doc-base to Recommends since we now register to doc-base
+
+ -- Ritesh Raj Sarraf <rrs@researchut.com>  Mon, 12 Oct 2009 18:04:37 +0530
+
+argparse (1.0-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/rules
+    - Fix build targets
+    - Clean up doc build directory
+    - Don't use shipped jquery script. Instead depend on the one shipped by
+      default in Debian
+  * debian/control
+    - Remove python-epydoc build dependency
+    - Add python-sphinx as build dependency to generate the docs
+    - Add Depends on libjs-jquery for python-argparse-doc
+  * Update Standards Version to 3.8.3. No changes required.
+
+ -- Ritesh Raj Sarraf <rrs@researchut.com>  Thu, 27 Aug 2009 15:36:52 +0530
+
+argparse (0.9.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #532564)
+
+ -- Ritesh Raj Sarraf <rrs@researchut.com>  Sun, 12 Jul 2009 18:20:39 +0545

@@ -1,0 +1,71 @@
+#!/usr/bin/make -f
+
+DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog | sed -rne 's,^Version: ([^-]+).*,\1,p')
+PKG_DIR=argparse-$(DEB_UPSTREAM_VERSION)
+get-orig-source:
+	uscan --force-download --rename --repack --download-version=$(DEB_UPSTREAM_VERSION) --destdir=.
+
+build:
+	dh_testdir
+	python setup.py build
+
+	# Generate the docs from the doc sources
+	[ ! -e doc/source ] || sphinx-build doc/source html
+
+	#And clean the cruft
+	[ ! -e html/_sources ] || rm -rf html/_sources
+	[ ! -e html/.doctrees ] || rm -rf html/.doctrees
+	[ ! -e html/.buildinfo ] || rm -rf html/.buildinfo
+	[ ! -e html/objects.inv ] || rm -rf html/objects.inv
+
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+
+	[ ! -e html ] || rm -rf html
+	[ ! -e doc.orig ] || mv doc.orig doc
+
+	python setup.py clean --all
+	[ -f argparse.pyc ] && rm -f argparse.pyc
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	[ ! -e doc ] || mv doc doc.orig
+
+	python setup.py install --root $(CURDIR)/debian/python-argparse
+	
+	# Remove jquery.js javascript as per policy 4.13
+	[ ! -e html/_static/jquery.js ] || rm -rf html/_static/jquery.js
+
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples test/*
+	dh_installchangelogs
+	dh_link -p python-argparse-doc \
+		/usr/share/javascript/jquery/jquery.js \
+		/usr/share/doc/python-argparse-doc/html/_static/jquery.js
+	dh_pysupport
+	dh_compress -Xexamples -X.js
+	dh_fixperms
+	dh_strip
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install get-orig-source
